@@ -49,7 +49,7 @@ function App() {
           } />
         ) : (
           // Redirect all other routes to login
-          <Route path="*" element={<Navigate to="/auth" replace />} />
+          <Route path="*" element={<Navigate to="/AuthForm" replace />} />
         )}
       </Routes>
     </Router>
