@@ -266,7 +266,7 @@ const Fieldmappage = () => {
             <Typography variant="h6">📊🌽 Corn - Yield History</Typography>
             <Line
                 data={{
-                labels: ["2020", "2021", "2022", "2023"],
+                labels: ["2021", "2022", "2023", "2024"],
                 datasets: fields
                     .filter(f => f.crop === "Corn")
                     .map(f => ({
@@ -285,10 +285,10 @@ const Fieldmappage = () => {
             <Typography variant="h6">📊🌾 Rice - Yield History</Typography>
             <Line
                 data={{
-                labels: ["2020", "2021", "2022", "2023"],
+                labels: ["2021", "2022", "2023", "2024"],
                 datasets: fields
                     .filter(f => f.crop === "Rice")
-                    .map(f => ({
+                    .map(f => ({ 
                     label: f.name,
                     data: f.yieldHistory,
                     borderColor: "#16a34a",
