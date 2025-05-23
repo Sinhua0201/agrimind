@@ -18,7 +18,7 @@ const features = [
   {
     icon: "⚠️",
     title: "Risk Alerts",
-    path: "/riskdashboard",
+    path: "/riskdashboardpage",
     description: "Get alerts for droughts and pest outbreaks.",
   },
   {
