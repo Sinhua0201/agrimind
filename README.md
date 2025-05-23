@@ -2,9 +2,28 @@
 
 AgriMind is a smart farming web app using AI and real-time data to support Malaysian farmers with weather forecasts, crop insights, risk alerts, and pest detection for better yield and sustainability. 🌾📊🌦️
 
-## Available Scripts
+## 🌟 Features
 
-In the project directory, you can run:
+🏠 Homepage Dashboard
+Overview of real-time weather, interactive field map, latest risk alerts, and quick access to all key tools.
+
+🌦️ Weather Page
+Displays 12 Malaysian states' weather data including temperature, humidity, and forecasts for smarter planning.
+
+🗺️ Field Map Page
+Filter by crop (All, Rice, Corn) with region-specific data like temp, soil moisture, weather, and forecast yield. Includes map-based field popups and yield history charts.
+
+🚨 Risk Dashboard Page
+Visualizes temperature, humidity, and wind data with risk heatmaps (High, Medium, Low). Includes notification logs and risk source breakdowns (weather, soil, pest, etc.).
+
+🤖 AI Assistant Page
+Ask farming-related questions in natural language (e.g., best planting times, fertilizer tips). Powered by Gemini API with localised advice.
+
+🐛 Pest Detection Page
+Upload pest images to identify species and get crop impact insights using AI image analysis.
+
+📈 Analytics & Reports Page
+Graphs for monthly yield comparison, price trends, and income simulation. Option to download reports for corn and rice.
 
 ### `npm start`
 
