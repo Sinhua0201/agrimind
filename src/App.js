@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './Layout';
+
+import Homepage from './components/homepage';
+import Fieldmappage from './components/fieldmappage';
+import Riskdashboardpage from './components/riskdashboardpage';
+import Chatbotpage from './components/chatbotpage';
+import Analyticspage from './components/analyticspage';
+import PestDetectionPage from './components/pestdetection';
+import WeatherPage from './components/weatherpage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/weatherpage" element={< WeatherPage/>} />
+          <Route path="/fieldmappage" element={<Fieldmappage />} />
+          <Route path="/riskdashboard" element={<Riskdashboardpage />} />
+          <Route path="/chatbotpage" element={<Chatbotpage />} />
+          <Route path="/analyticspage" element={<Analyticspage />} />
+          <Route path="/pestdetection" element={<PestDetectionPage />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 

@@ -1,0 +1,74 @@
+/* Reset & Layout */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar Style */
+.sidebar {
+  width: 240px;
+  background: linear-gradient(to bottom, #1e724f, #05472e);
+  color: white;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 26px;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+}
+
+/* Navigation Links */
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar nav a {
+  color: white;
+  text-decoration: none;
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover & Active Effect */
+.sidebar nav a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+.sidebar nav a:active {
+  background-color: #4c78af;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-color: #f5f7fa;
+  animation: fadein 0.5s ease;
+}
+
+/* Smooth Content Fade-in */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
