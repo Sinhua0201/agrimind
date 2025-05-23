@@ -30,7 +30,7 @@ function App() {
     <Router>
       <Routes>
         {/* Auth Route - accessible by everyone */}
-        <Route path="/auth" element={<AuthForm />} />
+        <Route path="/AuthForm" element={<AuthForm />} />
 
         {/* Protected Routes */}
         {user ? (

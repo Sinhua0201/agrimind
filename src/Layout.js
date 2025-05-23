@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate('/auth');
+      navigate('/AuthForm');
     } catch (error) {
       alert("Logout failed: " + error.message);
     }
