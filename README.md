@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# 🌱 Project Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+AgriMind is a smart farming web app using AI and real-time data to support Malaysian farmers with weather forecasts, crop insights, risk alerts, and pest detection for better yield and sustainability. 🌾📊🌦️
 
 ## Available Scripts
 
