@@ -8,6 +8,10 @@ import {
   Select,
   MenuItem,
   Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Button,
 } from "@mui/material";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -24,6 +28,11 @@ import {
   Legend,
 } from "chart.js";
 import customMarker from "../assets/marker.png";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import SpiritModel from "../SpiritModel"; // ✅ 按你的目录
+import axios from "axios";
+
 
 ChartJS.register(
   CategoryScale,
@@ -36,6 +45,7 @@ ChartJS.register(
   Legend
 );
 
+const geminiApiKey = "AIzaSyATjGvQYESzcQ7S3aHpZUEqeXrK_9hofeQ";
 // ✅ Malaysia Crop States with Weather Data
 const cropStates = {
   Rice: [
@@ -128,8 +138,13 @@ const icon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+
 const Fieldmappage = () => {
   const [cropFilter, setCropFilter] = useState("All");
+  const [showDialog, setShowDialog] = useState(false);
+  const [selectedField, setSelectedField] = useState("");
+  const [aiForecast, setAiForecast] = useState("");
+  const [modelPath, setModelPath] = useState("/models/idle.glb");
 
   const filteredFields =
     cropFilter === "All"
@@ -224,6 +239,98 @@ const Fieldmappage = () => {
 
         </MapContainer>
       </Paper>
+      {/* ✅ AI Floating Button */}
+      <Box
+        onClick={() => setShowDialog(true)}
+        sx={{
+          position: "fixed",
+          bottom: 20,
+          right: 20,
+          backgroundColor: "#fff",
+          p: 2,
+          borderRadius: "50%",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+          cursor: "pointer",
+          zIndex: 1000,
+        }}
+      >
+        <Typography fontSize={30}>🤖</Typography>
+      </Box>
+
+      {/* ✅ AI Dialog */}
+      <Dialog open={showDialog} onClose={() => setShowDialog(false)} fullWidth>
+        <DialogTitle>📊 Yield Forecast AI</DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth sx={{ mt: 2 }}>
+            <InputLabel>Select Field</InputLabel>
+            <Select
+              value={selectedField}
+              label="Select Field"
+              onChange={(e) => setSelectedField(e.target.value)}
+            >
+              {fields.map((f, idx) => (
+                <MenuItem key={idx} value={f.name}>
+                  {f.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <Box mt={3}>
+            <Button
+              variant="contained"
+              onClick={async () => {
+                const field = fields.find((f) => f.name === selectedField);
+                if (!field) return;
+
+                setModelPath("/models/ai.glb");
+
+                const prompt = `You're an agronomist AI. Based on:
+      - Temperature: ${field.temp}°C
+      - Soil Moisture: ${field.moisture}%
+      - Weather: ${field.weather}
+      - Historical Yields (t/ha): ${field.yieldHistory.join(", ")}
+
+      Predict the 2025 forecast yield in tons per hectare. Be concise, under 20 words.`;
+
+                const res = await axios.post(
+                  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
+                  {
+                    contents: [{ parts: [{ text: prompt }] }],
+                  },
+                  {
+                    headers: { "Content-Type": "application/json" },
+                  }
+                );
+                const data = res.data;
+
+                const reply =
+                  data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+                  "⚠️ Prediction failed.";
+
+                setAiForecast(reply);
+              }}
+            >
+              Predict Yield
+            </Button>
+
+            {aiForecast && (
+              <Typography sx={{ mt: 3, whiteSpace: "pre-line" }}>
+                ✅ <strong>Prediction:</strong> {aiForecast}
+              </Typography>
+            )}
+          </Box>
+
+          <Box sx={{ height: 300, mt: 3 }}>
+            <Canvas camera={{ position: [0, 1, 3], fov: 50 }}>
+              <ambientLight />
+              <directionalLight position={[2, 2, 2]} />
+              <OrbitControls enableZoom={false} />
+              <SpiritModel key={modelPath} modelPath={modelPath} />
+            </Canvas>
+          </Box>
+        </DialogContent>
+      </Dialog>
 
       {/* Charts */}
         <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
