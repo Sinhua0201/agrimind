@@ -23,7 +23,7 @@ Ask farming-related questions in natural language (e.g., best planting times, fe
 Upload pest images to identify species and get crop impact insights using AI image analysis.
 
 -📈 Analytics & Reports Page
-Graphs for monthly yield comparison, price trends, and income simulation. Option to download reports for corn and rice. AI assistant predicts which states face risks (e.g., floods, pests) in coming weeks, along with severity and confidence level, based on environment and growth stages.
+Graphs for monthly yield comparison, price trends, and income simulation. Option to download reports for corn and rice. AI analyzes seasonal patterns and economic factors to forecast next 3-month price range (RM/ton), including direction, reason, and confidence level. Reports exportable as PDF.
 
 ### 🏗️ System Architecture
 
