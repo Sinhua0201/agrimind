@@ -9,6 +9,9 @@ import {
   Select,
   Button,
   Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from "@mui/material";
 import { Line, Bar } from "react-chartjs-2";
 import jsPDF from "jspdf";
@@ -24,6 +27,11 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import SpiritModel from "../SpiritModel";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+
+import axios from "axios";
 
 ChartJS.register(
   CategoryScale,
@@ -36,6 +44,7 @@ ChartJS.register(
   Legend
 );
 
+const geminiApiKey = "AIzaSyATjGvQYESzcQ7S3aHpZUEqeXrK_9hofeQ";
 const months = [
   "2024-01", "2024-02", "2024-03", "2024-04", "2024-05",
   "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"
@@ -56,6 +65,9 @@ const data = {
 
 export default function Analyticspage() {
   const [selectedCrop, setSelectedCrop] = useState("Corn");
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiResult, setAiResult] = useState("");
+  const [modelPath, setModelPath] = useState("/models/idle.glb");
 
   const handleExportPDF = () => {
     const input = document.getElementById("report");
@@ -88,6 +100,40 @@ export default function Analyticspage() {
           <MenuItem value="Rice">Rice</MenuItem>
         </Select>
       </FormControl>
+
+      <Box
+        sx={{
+          position: "absolute",
+          top: 20,
+          right: 30,
+          zIndex: 999,
+        }}
+      >
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleExportPDF}
+        >
+          📄 Export PDF
+        </Button>
+      </Box>
+
+        <Box
+        onClick={() => setAiOpen(true)}
+        sx={{
+          position: "fixed",
+          bottom: 20,
+          right: 30,
+          backgroundColor: "#fff",
+          p: 2,
+          borderRadius: "50%",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+          cursor: "pointer",
+          zIndex: 999,
+        }}
+      >
+        <Typography fontSize={30}>🤖</Typography>
+      </Box>
 
       <Box id="report">
         <Grid container spacing={3}>
@@ -157,15 +203,82 @@ export default function Analyticspage() {
           </Grid>
         </Grid>
       </Box>
+      <Dialog open={aiOpen} onClose={() => setAiOpen(false)} fullWidth>
+      <DialogTitle>🤖 AI Price Trend Forecast</DialogTitle>
+      <DialogContent>
+        <Typography sx={{ mb: 2 }}>
+          Based on current yield, price, and seasonality, here's what the AI predicts:
+        </Typography>
 
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleExportPDF}
-        sx={{ mt: 3 }}
-      >
-        📄 Export PDF Report
-      </Button>
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel>Crop</InputLabel>
+          <Select
+            value={selectedCrop}
+            label="Crop"
+            onChange={(e) => setSelectedCrop(e.target.value)}
+          >
+            <MenuItem value="Corn">Corn</MenuItem>
+            <MenuItem value="Rice">Rice</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Button
+          variant="contained"
+          disabled={!selectedCrop}
+          onClick={async () => {
+            setModelPath("/models/ai.glb");
+
+            const monthsData = months.map((m, i) => `${m}: yield ${data[selectedCrop].yield[i]}t/ha, price RM${data[selectedCrop].price[i]}`);
+            const prompt = `You are an agricultural economist AI. Here is crop data for ${selectedCrop}:
+
+            ${monthsData.join("\n")}
+
+            Based on the seasonal pattern, yield, and historical prices, predict the trend of ${selectedCrop} prices over the next 3 months in Malaysia.
+
+            Your response must include:
+            1. Estimated average price range in RM/ton (e.g. RM240–RM260).
+            2. Direction: rising, falling, or stable.
+            3. Main reason driving the trend.
+            4. Confidence Level (percentage).
+
+            Keep your answer under 60 words.`;
+
+            try {
+              const res = await axios.post(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
+                {
+                  contents: [{ parts: [{ text: prompt }] }],
+                },
+                { headers: { "Content-Type": "application/json" } }
+              );
+
+              const reply =
+                res?.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "⚠️ AI response failed.";
+              setAiResult(reply);
+            } catch (err) {
+              console.error("AI fetch error:", err);
+              setAiResult("❌ Error generating prediction.");
+            }
+          }}
+        >
+          Predict AI Trend
+        </Button>
+
+        {aiResult && (
+          <Typography sx={{ mt: 2, whiteSpace: "pre-line" }}>
+            🧠 <strong>AI says:</strong> {aiResult}
+              <Box sx={{ height: 300, mt: 3 }}>
+                <Canvas camera={{ position: [0, 1, 3], fov: 50 }}>
+                  <ambientLight />
+                  <directionalLight position={[2, 2, 2]} />
+                  <OrbitControls enableZoom={false} />
+                  <SpiritModel key={modelPath} modelPath={modelPath} />
+                </Canvas>
+              </Box>
+          </Typography>
+        )}
+      </DialogContent>
+    </Dialog>
     </Box>
   );
 }

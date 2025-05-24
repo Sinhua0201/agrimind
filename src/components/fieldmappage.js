@@ -285,13 +285,18 @@ const Fieldmappage = () => {
 
                 setModelPath("/models/ai.glb");
 
-                const prompt = `You're an agronomist AI. Based on:
-      - Temperature: ${field.temp}°C
-      - Soil Moisture: ${field.moisture}%
-      - Weather: ${field.weather}
-      - Historical Yields (t/ha): ${field.yieldHistory.join(", ")}
+                const prompt = `You are an expert agronomist AI.
+                  Given the following data:
+                  - Temperature: ${field.temp}°C
+                  - Soil Moisture: ${field.moisture}%
+                  - Weather: ${field.weather}
+                  - Historical Yields (t/ha): ${field.yieldHistory.join(", ")}
 
-      Predict the 2025 forecast yield in tons per hectare. Be concise, under 20 words.`;
+                  Please provide:
+                  1. A 2025 yield forecast in tons per hectare.
+                  2. A confidence level (in %).
+                  3. The key factors driving the prediction (e.g. "Low soil moisture may reduce yield").
+                  Keep it concise, under 40 words total.`;
 
                 const res = await axios.post(
                   `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
