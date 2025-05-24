@@ -84,7 +84,7 @@ export default function Analyticspage() {
   const cropData = data[selectedCrop];
 
   return (
-    <Box sx={{ p: 4, minHeight: "100vh", bgcolor: "#f5f5f5" }}>
+    <Box sx={{ p: 4, minHeight: "100vh", bgcolor: "transparent" }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         📊 Analytics & Reports
       </Typography>

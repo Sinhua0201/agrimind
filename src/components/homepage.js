@@ -36,10 +36,10 @@ export default function Homepage() {
       <Box
         sx={{
           height: "60vh",
-          backgroundImage: "url('https://images.unsplash.com/photo-1600431521340-491eca880813')",
+          backgroundColor: "rgba(255, 255, 255, 0.2)", // ✅ 半透明白
           backgroundSize: "cover",
           backgroundPosition: "center",
-          color: "#fff",
+          color: "black",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

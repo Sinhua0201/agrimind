@@ -206,7 +206,7 @@ const Riskdashboardpage = () => {
   }, []);
 
   return (
-    <Box sx={{ p: 4, bgcolor: "#f3f4f6", minHeight: "100vh" }}>
+    <Box sx={{ p: 4, bgcolor: "transparent", minHeight: "100vh" }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         ⚠️ Risk Dashboard
       </Typography>

@@ -145,6 +145,11 @@ const Fieldmappage = () => {
   const [selectedField, setSelectedField] = useState("");
   const [aiForecast, setAiForecast] = useState("");
   const [modelPath, setModelPath] = useState("/models/idle.glb");
+  const lineColors = [
+  "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#6366f1", "#14b8a6",
+  "#eab308", "#f43f5e", "#8b5cf6", "#22c55e", "#ec4899", "#0ea5e9"
+];
+
 
   const filteredFields =
     cropFilter === "All"
@@ -381,10 +386,10 @@ const Fieldmappage = () => {
                 labels: ["2021", "2022", "2023", "2024"],
                 datasets: fields
                     .filter(f => f.crop === "Corn")
-                    .map(f => ({
+                    .map((f, i) => ({
                     label: f.name,
                     data: f.yieldHistory,
-                    borderColor: "#3b82f6",
+                    borderColor: lineColors[i % lineColors.length],
                     fill: false,
                     tension: 0.3,
                     })),
@@ -400,10 +405,10 @@ const Fieldmappage = () => {
                 labels: ["2021", "2022", "2023", "2024"],
                 datasets: fields
                     .filter(f => f.crop === "Rice")
-                    .map(f => ({ 
+                    .map((f, i) => ({ 
                     label: f.name,
                     data: f.yieldHistory,
-                    borderColor: "#16a34a",
+                    borderColor: lineColors[i % lineColors.length],
                     fill: false,
                     tension: 0.3,
                     })),

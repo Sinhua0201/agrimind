@@ -18,6 +18,10 @@ const Layout = ({ children }) => {
 
   return (
     <div className="layout">
+        <video autoPlay muted loop className="background-video">
+          <source src="/background.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       <div className="sidebar">
         <div>
           <h2>AgriMind</h2>

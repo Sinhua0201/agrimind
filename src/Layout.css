@@ -63,7 +63,7 @@ body, html, #root {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
-  background-color: #f5f7fa;
+  background-color: transparent;
   animation: fadein 0.5s ease;
 }
 
@@ -89,4 +89,20 @@ body, html, #root {
 @keyframes fadein {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 1; /* optional */
+}
+
+.layout {
+  position: relative;
+  z-index: 1;
 }

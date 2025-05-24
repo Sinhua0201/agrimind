@@ -80,7 +80,7 @@ export default function PestDetectionPage() {
   };
 
   return (
-    <Box sx={{ p: 4, bgcolor: "#f9fafb", minHeight: "100vh" }}>
+    <Box sx={{ p: 4, bgcolor: "transparent", minHeight: "100vh" }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         🐛 Pest Detection from Image
       </Typography>
