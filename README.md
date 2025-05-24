@@ -11,10 +11,10 @@ Overview of real-time weather, interactive field map, latest risk alerts, and qu
 Displays 12 Malaysian states' weather data including temperature, humidity, and forecasts for smarter planning.
 
 -🗺️ Field Map Page
-Filter by crop (All, Rice, Corn) with region-specific data like temp, soil moisture, weather, and forecast yield. Includes map-based field popups and yield history charts.
+Filter by crop (All, Rice, Corn) with region-specific data like temp, soil moisture, weather, and forecast yield. Includes map-based field popups and yield history charts. Includes AI-powered 2025 yield predictions based on real-time weather, soil, and historical yields, visualized with a 3D model.
 
 -🚨 Risk Dashboard Page
-Visualizes temperature, humidity, and wind data with risk heatmaps (High, Medium, Low). Includes notification logs and risk source breakdowns (weather, soil, pest, etc.).
+Visualizes temperature, humidity, and wind data with risk heatmaps (High, Medium, Low). Includes notification logs and risk source breakdowns (weather, soil, pest, etc.). AI assistant predicts which states face risks (e.g., floods, pests) in coming weeks, along with severity and confidence level, based on environment and growth stages.
 
 -🤖 AI Assistant Page
 Ask farming-related questions in natural language (e.g., best planting times, fertilizer tips). Powered by Gemini API with localised advice.
@@ -23,7 +23,7 @@ Ask farming-related questions in natural language (e.g., best planting times, fe
 Upload pest images to identify species and get crop impact insights using AI image analysis.
 
 -📈 Analytics & Reports Page
-Graphs for monthly yield comparison, price trends, and income simulation. Option to download reports for corn and rice.
+Graphs for monthly yield comparison, price trends, and income simulation. Option to download reports for corn and rice. AI assistant predicts which states face risks (e.g., floods, pests) in coming weeks, along with severity and confidence level, based on environment and growth stages.
 
 ### 🏗️ System Architecture
 
