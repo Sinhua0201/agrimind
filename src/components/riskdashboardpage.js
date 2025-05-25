@@ -35,7 +35,7 @@ import { OrbitControls } from "@react-three/drei";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
-// Weather API key
+const weatherApiKey = "aaac0a28c51e4fce95374003251204";
 const geminiApiKey = "AIzaSyATjGvQYESzcQ7S3aHpZUEqeXrK_9hofeQ";
 
 // Location-based risk data
@@ -195,7 +195,7 @@ const Riskdashboardpage = () => {
     const getWeather = async () => {
       try {
         const res = await axios.get(
-          `https://api.weatherapi.com/v1/current.json?key=${geminiApiKey}&q=Malaysia`
+          `https://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=Malaysia`
         );
         setWeather(res.data.current);
       } catch (err) {
