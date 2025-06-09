@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
           <h2>AgriMind</h2>
           <nav>
             <Link to="/">Home</Link>
-            <Link to="/weatherpage">WeatherPage</Link>
+            <Link to="/weatherpage">Weather</Link>
             <Link to="/fieldmappage">Field Map</Link>
             <Link to="/riskdashboardpage">Risk Dashboard</Link>
             <Link to="/chatbotpage">AI Assistant</Link>

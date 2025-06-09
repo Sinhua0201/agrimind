@@ -14,8 +14,7 @@ import {
   DialogContent,
 } from "@mui/material";
 import { Line, Bar } from "react-chartjs-2";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import Papa from "papaparse"; // 导入 papaparse 库
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,7 +29,6 @@ import {
 import SpiritModel from "../SpiritModel";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-
 import axios from "axios";
 
 ChartJS.register(
@@ -69,16 +67,26 @@ export default function Analyticspage() {
   const [aiResult, setAiResult] = useState("");
   const [modelPath, setModelPath] = useState("/models/idle.glb");
 
-  const handleExportPDF = () => {
-    const input = document.getElementById("report");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("analytics-report.pdf");
-    });
+  const handleExportCSV = () => {
+    const cropData = data[selectedCrop];
+
+    // 构建 CSV 数据
+    const csvData = cropData.yield.map((_, index) => ({
+      Month: months[index],
+      Yield: cropData.yield[index],
+      Price: cropData.price[index],
+      Income: cropData.income[index],
+    }));
+
+    // 使用 PapaParse 库将数据转换为 CSV
+    const csv = Papa.unparse(csvData);
+
+    // 创建并下载 CSV 文件
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${selectedCrop}-data.csv`;
+    link.click();
   };
 
   const cropData = data[selectedCrop];
@@ -111,14 +119,14 @@ export default function Analyticspage() {
       >
         <Button
           variant="contained"
-          color="secondary"
-          onClick={handleExportPDF}
+          color="primary"
+          onClick={handleExportCSV}
         >
-          📄 Export PDF
+          📈 Export CSV
         </Button>
       </Box>
 
-        <Box
+      <Box
         onClick={() => setAiOpen(true)}
         sx={{
           position: "fixed",
@@ -139,7 +147,7 @@ export default function Analyticspage() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 2 }}>
-              <Typography variant="h6" >🌾 Yield Comparison</Typography>
+              <Typography variant="h6">🌾 Yield Comparison</Typography>
               <Box sx={{ minWidth: 700 }}></Box>
               <Bar
                 data={{
@@ -203,70 +211,71 @@ export default function Analyticspage() {
           </Grid>
         </Grid>
       </Box>
+
       <Dialog open={aiOpen} onClose={() => setAiOpen(false)} fullWidth>
-      <DialogTitle>🤖 AI Price Trend Forecast</DialogTitle>
-      <DialogContent>
-        <Typography sx={{ mb: 2 }}>
-          Based on current yield, price, and seasonality, here's what the AI predicts:
-        </Typography>
+        <DialogTitle>🤖 AI Price Trend Forecast</DialogTitle>
+        <DialogContent>
+          <Typography sx={{ mb: 2 }}>
+            Based on current yield, price, and seasonality, here's what the AI predicts:
+          </Typography>
 
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel>Crop</InputLabel>
-          <Select
-            value={selectedCrop}
-            label="Crop"
-            onChange={(e) => setSelectedCrop(e.target.value)}
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel>Crop</InputLabel>
+            <Select
+              value={selectedCrop}
+              label="Crop"
+              onChange={(e) => setSelectedCrop(e.target.value)}
+            >
+              <MenuItem value="Corn">Corn</MenuItem>
+              <MenuItem value="Rice">Rice</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Button
+            variant="contained"
+            disabled={!selectedCrop}
+            onClick={async () => {
+              setModelPath("/models/ai.glb");
+
+              const monthsData = months.map((m, i) => `${m}: yield ${data[selectedCrop].yield[i]}t/ha, price RM${data[selectedCrop].price[i]}`);
+              const prompt = `You are an agricultural economist AI. Here is crop data for ${selectedCrop}:
+
+              ${monthsData.join("\n")}
+
+              Based on the seasonal pattern, yield, and historical prices, predict the trend of ${selectedCrop} prices over the next 3 months in Malaysia.
+
+              Your response must include:
+              1. Estimated average price range in RM/ton (e.g. RM240–RM260).
+              2. Direction: rising, falling, or stable.
+              3. Main reason driving the trend.
+              4. Confidence Level (percentage).
+
+              Keep your answer under 60 words.`;
+
+              try {
+                const res = await axios.post(
+                  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
+                  {
+                    contents: [{ parts: [{ text: prompt }] }],
+                  },
+                  { headers: { "Content-Type": "application/json" } }
+                );
+
+                const reply =
+                  res?.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "⚠️ AI response failed.";
+                setAiResult(reply);
+              } catch (err) {
+                console.error("AI fetch error:", err);
+                setAiResult("❌ Error generating prediction.");
+              }
+            }}
           >
-            <MenuItem value="Corn">Corn</MenuItem>
-            <MenuItem value="Rice">Rice</MenuItem>
-          </Select>
-        </FormControl>
+            Predict AI Trend
+          </Button>
 
-        <Button
-          variant="contained"
-          disabled={!selectedCrop}
-          onClick={async () => {
-            setModelPath("/models/ai.glb");
-
-            const monthsData = months.map((m, i) => `${m}: yield ${data[selectedCrop].yield[i]}t/ha, price RM${data[selectedCrop].price[i]}`);
-            const prompt = `You are an agricultural economist AI. Here is crop data for ${selectedCrop}:
-
-            ${monthsData.join("\n")}
-
-            Based on the seasonal pattern, yield, and historical prices, predict the trend of ${selectedCrop} prices over the next 3 months in Malaysia.
-
-            Your response must include:
-            1. Estimated average price range in RM/ton (e.g. RM240–RM260).
-            2. Direction: rising, falling, or stable.
-            3. Main reason driving the trend.
-            4. Confidence Level (percentage).
-
-            Keep your answer under 60 words.`;
-
-            try {
-              const res = await axios.post(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
-                {
-                  contents: [{ parts: [{ text: prompt }] }],
-                },
-                { headers: { "Content-Type": "application/json" } }
-              );
-
-              const reply =
-                res?.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "⚠️ AI response failed.";
-              setAiResult(reply);
-            } catch (err) {
-              console.error("AI fetch error:", err);
-              setAiResult("❌ Error generating prediction.");
-            }
-          }}
-        >
-          Predict AI Trend
-        </Button>
-
-        {aiResult && (
-          <Typography sx={{ mt: 2, whiteSpace: "pre-line" }}>
-            🧠 <strong>AI says:</strong> {aiResult}
+          {aiResult && (
+            <Typography sx={{ mt: 2, whiteSpace: "pre-line" }}>
+              🧠 <strong>AI says:</strong> {aiResult}
               <Box sx={{ height: 300, mt: 3 }}>
                 <Canvas camera={{ position: [0, 1, 3], fov: 50 }}>
                   <ambientLight />
@@ -275,10 +284,10 @@ export default function Analyticspage() {
                   <SpiritModel key={modelPath} modelPath={modelPath} />
                 </Canvas>
               </Box>
-          </Typography>
-        )}
-      </DialogContent>
-    </Dialog>
+            </Typography>
+          )}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
