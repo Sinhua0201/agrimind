@@ -59,6 +59,8 @@ Graphs for monthly yield comparison, price trends, and income simulation. Option
 ## 📄 License
 
 © 2025 AgriMind by Team DataSquad. All rights reserved.
+
 🛑 Code is provided strictly for reference purposes only.
+
 ❌ No use, modification, or distribution is allowed without prior written permission from the developers.
 
