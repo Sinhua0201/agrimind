@@ -242,7 +242,7 @@ export default function Analyticspage() {
 
               ${monthsData.join("\n")}
 
-              Based on the seasonal pattern, yield, and historical prices, predict the trend of ${selectedCrop} prices over the next 3 months in Malaysia.
+              Based on the seasonal pattern, yield, and historical prices, predict the trend of ${selectedCrop} prices over the next 3 months (July- September) in Malaysia.
 
               Your response must include:
               1. Estimated average price range in RM/ton (e.g. RM240–RM260).
