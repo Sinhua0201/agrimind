@@ -48,7 +48,7 @@ Graphs for monthly yield comparison, price trends, and income simulation. Option
 
 ### 📚 References
 
-🌐 Website: [AgriMind](https://calm-bay-0de3d2900.6.azurestaticapps.net)
+🌐 Website: [AgriMind](https://black-stone-0ba2b5110.1.azurestaticapps.net)
 
 ### 👥 Team DataSquad
 
