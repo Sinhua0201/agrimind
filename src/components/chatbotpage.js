@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-const geminiApiKey = "AIzaSyATjGvQYESzcQ7S3aHpZUEqeXrK_9hofeQ";
+const geminiApiKey = "AIzaSyAHtMrpIb6QyvoakyVK_KnROu0ir2oDfXM";
 
 const presetQuestions = [
   "What is the best time to plant corn?",
