@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-const geminiApiKey = "AIzaSyCrV4UmDFH3SwdlJx22761QT23SyMJbvrA";
+const geminiApiKey = process.env.REACT_APP_GEMINI_API_KEY;
 
 const presetQuestions = [
   "What is the best time to plant corn?",

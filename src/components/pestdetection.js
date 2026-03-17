@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-const geminiApiKey = "AIzaSyCrV4UmDFH3SwdlJx22761QT23SyMJbvrA";
+const geminiApiKey = process.env.REACT_APP_GEMINI_API_KEY;
 
 export default function PestDetectionPage() {
   const [imageFile, setImageFile] = useState(null);

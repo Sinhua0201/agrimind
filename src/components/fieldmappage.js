@@ -45,7 +45,7 @@ ChartJS.register(
   Legend
 );
 
-const geminiApiKey = "AIzaSyCrV4UmDFH3SwdlJx22761QT23SyMJbvrA";
+const geminiApiKey = process.env.REACT_APP_GEMINI_API_KEY;
 // ✅ Malaysia Crop States with Weather Data
 const cropStates = {
   Rice: [

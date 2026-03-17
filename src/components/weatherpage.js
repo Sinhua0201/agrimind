@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const weatherApiKey = "aaac0a28c51e4fce95374003251204"; // 用你自己的 API 密钥
+const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 const states = [
   { name: "Johor", lat: 1.4854, lon: 103.7618 },
   { name: "Kedah", lat: 6.1184, lon: 100.3682 },
