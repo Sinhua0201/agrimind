@@ -42,7 +42,7 @@ ChartJS.register(
   Legend
 );
 
-const geminiApiKey = "AIzaSyA3VpEZha1ploysLVeSVIyI6FqMFoy4DAI";
+const geminiApiKey = "AIzaSyCrV4UmDFH3SwdlJx22761QT23SyMJbvrA";
 const months = [
   "2024-01", "2024-02", "2024-03", "2024-04", "2024-05",
   "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"

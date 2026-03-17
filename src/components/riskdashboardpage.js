@@ -36,7 +36,7 @@ import { OrbitControls } from "@react-three/drei";
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 const weatherApiKey = "aaac0a28c51e4fce95374003251204";
-const geminiApiKey = "AIzaSyA3VpEZha1ploysLVeSVIyI6FqMFoy4DAI";
+const geminiApiKey = "AIzaSyCrV4UmDFH3SwdlJx22761QT23SyMJbvrA";
 
 // Location-based risk data
 const farmLocations = [
