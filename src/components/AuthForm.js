@@ -95,6 +95,7 @@ function AuthForm() {
           type="password"
           placeholder="Password"
           required
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

@@ -384,7 +384,7 @@ const Riskdashboardpage = () => {
 
                 try {
                   const res = await axios.post(
-                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiApiKey}`,
                     {
                       contents: [{ parts: [{ text: prompt }] }],
                     },
@@ -398,7 +398,9 @@ const Riskdashboardpage = () => {
                   setAiResponse(reply);
                 } catch (err) {
                   console.error("Gemini error", err);
-                  setAiResponse("❌ AI request failed.");
+                  console.error("Error details:", err.response?.data);
+                  const errorMsg = err.response?.data?.error?.message || "Unknown error";
+                  setAiResponse(`❌ API错误: ${errorMsg}`);
                 }
               }}
             >

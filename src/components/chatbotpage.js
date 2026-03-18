@@ -41,7 +41,7 @@ const Chatbotpage = () => {
       const prompt = `${text}\n\nOnly answer based on agriculture conditions in Malaysia. Do not reference other countries. Be short, specific, and practical.`;
 
       const res = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiApiKey}`,
         {
           contents: [{ parts: [{ text: prompt }] }],
         }

@@ -290,6 +290,13 @@ const Fieldmappage = () => {
 
                 setModelPath("/models/ai.glb");
 
+                // 调试：检查API key
+                if (!geminiApiKey) {
+                  alert("⚠️ API Key未加载！请确保.env文件配置正确并重启开发服务器。");
+                  console.error("REACT_APP_GEMINI_API_KEY is undefined");
+                  return;
+                }
+
                 const prompt = `You are an expert agronomist AI.
                   Given the following data:
                   - Temperature: ${field.temp}°C
@@ -303,22 +310,27 @@ const Fieldmappage = () => {
                   3. The key factors driving the prediction (e.g. "Low soil moisture may reduce yield").
                   Keep it concise, under 40 words total.`;
 
-                const res = await axios.post(
-                  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
-                  {
-                    contents: [{ parts: [{ text: prompt }] }],
-                  },
-                  {
-                    headers: { "Content-Type": "application/json" },
-                  }
-                );
-                const data = res.data;
+                try {
+                  const res = await axios.post(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiApiKey}`,
+                    {
+                      contents: [{ parts: [{ text: prompt }] }],
+                    },
+                    {
+                      headers: { "Content-Type": "application/json" },
+                    }
+                  );
+                  const data = res.data;
 
-                const reply =
-                  data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
-                  "⚠️ Prediction failed.";
+                  const reply =
+                    data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+                    "⚠️ Prediction failed.";
 
-                setAiForecast(reply);
+                  setAiForecast(reply);
+                } catch (error) {
+                  console.error("API Error:", error.response?.data || error.message);
+                  setAiForecast(`❌ Error: ${error.response?.status || 'Network error'}`);
+                }
               }}
             >
               Predict Yield
